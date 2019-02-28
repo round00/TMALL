@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gjk.mapper.ProductMapper">
+    <sql id="table_name">product</sql>
+    <sql id="all_fields">id,name,subTitle, originalPrice, promotePrice,stock,cid,createDate</sql>
+    <select id="getProductListByCid" resultType="com.gjk.pojo.Product">
+      select
+      <include refid="all_fields" />
+      from
+      <include refid="table_name" />
+      where cid = #{cid}
+    </select>
+</mapper>
