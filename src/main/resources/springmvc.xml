@@ -20,4 +20,11 @@
         <property name="prefix" value="/WEB-INF/jsp/" />
         <property name="suffix" value=".jsp" />
     </bean>
+
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/fore*" />
+            <bean class="com.gjk.interceptor.CommonInterceptor" />
+        </mvc:interceptor>
+    </mvc:interceptors>
 </beans>

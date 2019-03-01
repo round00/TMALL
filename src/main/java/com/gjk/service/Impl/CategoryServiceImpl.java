@@ -23,14 +23,20 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public List<Category> getCategoryList() {
         CategoryExample categoryExample = new CategoryExample();
+        categoryExample.setOrderByClause("id desc");
         return categoryMapper.selectByExample(categoryExample);
+    }
+
+    @Override
+    public void fillProductFields(Category category) {
+        List<Product> products = productService.getProductListByCid(category);
+        category.setProducts(products);
     }
 
     @Override
     public void fillProductFields(List<Category> categories) {
         for(Category c : categories){
-            List<Product> products = productService.getProductListByCid(c);
-            c.setProducts(products);
+            fillProductFields(c);
         }
     }
 
@@ -50,5 +56,10 @@ public class CategoryServiceImpl implements CategoryService {
             }
             c.setProductsByRow(productListByRow);
         }
+    }
+
+    @Override
+    public Category getCategoryById(int cid) {
+        return categoryMapper.selectByPrimaryKey(cid);
     }
 }

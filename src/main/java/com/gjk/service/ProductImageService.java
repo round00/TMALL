@@ -5,8 +5,13 @@ import com.gjk.pojo.ProductImage;
 import java.util.List;
 
 public interface ProductImageService {
+
+    String type_single = "type_single";
+    String type_detail = "type_detail";
+
     /**
-     * 通过产品ID获取产品图片
+     * @Param1: 产品id
+     * @Param2： 产品图片类型
      * */
-    List<ProductImage> getProductImageByPid(int pid);
+    List<ProductImage> getProductImages(int pid, String type);
 }
