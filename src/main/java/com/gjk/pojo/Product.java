@@ -1,7 +1,6 @@
 package com.gjk.pojo;
 
 import java.util.Date;
-import java.util.List;
 
 public class Product {
     private Integer id;
@@ -38,7 +37,7 @@ public class Product {
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.name = name == null ? null : name.trim();
     }
 
     public String getSubTitle() {
@@ -46,7 +45,7 @@ public class Product {
     }
 
     public void setSubTitle(String subTitle) {
-        this.subTitle = subTitle;
+        this.subTitle = subTitle == null ? null : subTitle.trim();
     }
 
     public Float getOriginalPrice() {

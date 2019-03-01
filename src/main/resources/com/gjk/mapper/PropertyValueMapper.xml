@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.gjk.mapper.ProductImageMapper">
-  <resultMap id="BaseResultMap" type="com.gjk.pojo.ProductImage">
+<mapper namespace="com.gjk.mapper.PropertyValueMapper">
+  <resultMap id="BaseResultMap" type="com.gjk.pojo.PropertyValue">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="pid" jdbcType="INTEGER" property="pid" />
-    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="ptid" jdbcType="INTEGER" property="ptid" />
+    <result column="value" jdbcType="VARCHAR" property="value" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -65,15 +66,15 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, pid, type
+    id, pid, ptid, value
   </sql>
-  <select id="selectByExample" parameterType="com.gjk.pojo.ProductImageExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.gjk.pojo.PropertyValueExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from productimage
+    from propertyvalue
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -84,27 +85,27 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from productimage
+    from propertyvalue
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from productimage
+    delete from propertyvalue
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.gjk.pojo.ProductImageExample">
-    delete from productimage
+  <delete id="deleteByExample" parameterType="com.gjk.pojo.PropertyValueExample">
+    delete from propertyvalue
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.gjk.pojo.ProductImage">
-    insert into productimage (id, pid, type
-      )
-    values (#{id,jdbcType=INTEGER}, #{pid,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}
-      )
+  <insert id="insert" parameterType="com.gjk.pojo.PropertyValue">
+    insert into propertyvalue (id, pid, ptid, 
+      value)
+    values (#{id,jdbcType=INTEGER}, #{pid,jdbcType=INTEGER}, #{ptid,jdbcType=INTEGER}, 
+      #{value,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.gjk.pojo.ProductImage">
-    insert into productimage
+  <insert id="insertSelective" parameterType="com.gjk.pojo.PropertyValue">
+    insert into propertyvalue
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
@@ -112,8 +113,11 @@
       <if test="pid != null">
         pid,
       </if>
-      <if test="type != null">
-        type,
+      <if test="ptid != null">
+        ptid,
+      </if>
+      <if test="value != null">
+        value,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -123,19 +127,22 @@
       <if test="pid != null">
         #{pid,jdbcType=INTEGER},
       </if>
-      <if test="type != null">
-        #{type,jdbcType=VARCHAR},
+      <if test="ptid != null">
+        #{ptid,jdbcType=INTEGER},
+      </if>
+      <if test="value != null">
+        #{value,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.gjk.pojo.ProductImageExample" resultType="java.lang.Long">
-    select count(*) from productimage
+  <select id="countByExample" parameterType="com.gjk.pojo.PropertyValueExample" resultType="java.lang.Long">
+    select count(*) from propertyvalue
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update productimage
+    update propertyvalue
     <set>
       <if test="record.id != null">
         id = #{record.id,jdbcType=INTEGER},
@@ -143,8 +150,11 @@
       <if test="record.pid != null">
         pid = #{record.pid,jdbcType=INTEGER},
       </if>
-      <if test="record.type != null">
-        type = #{record.type,jdbcType=VARCHAR},
+      <if test="record.ptid != null">
+        ptid = #{record.ptid,jdbcType=INTEGER},
+      </if>
+      <if test="record.value != null">
+        value = #{record.value,jdbcType=VARCHAR},
       </if>
     </set>
     <if test="_parameter != null">
@@ -152,30 +162,35 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update productimage
+    update propertyvalue
     set id = #{record.id,jdbcType=INTEGER},
       pid = #{record.pid,jdbcType=INTEGER},
-      type = #{record.type,jdbcType=VARCHAR}
+      ptid = #{record.ptid,jdbcType=INTEGER},
+      value = #{record.value,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.gjk.pojo.ProductImage">
-    update productimage
+  <update id="updateByPrimaryKeySelective" parameterType="com.gjk.pojo.PropertyValue">
+    update propertyvalue
     <set>
       <if test="pid != null">
         pid = #{pid,jdbcType=INTEGER},
       </if>
-      <if test="type != null">
-        type = #{type,jdbcType=VARCHAR},
+      <if test="ptid != null">
+        ptid = #{ptid,jdbcType=INTEGER},
+      </if>
+      <if test="value != null">
+        value = #{value,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.gjk.pojo.ProductImage">
-    update productimage
+  <update id="updateByPrimaryKey" parameterType="com.gjk.pojo.PropertyValue">
+    update propertyvalue
     set pid = #{pid,jdbcType=INTEGER},
-      type = #{type,jdbcType=VARCHAR}
+      ptid = #{ptid,jdbcType=INTEGER},
+      value = #{value,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

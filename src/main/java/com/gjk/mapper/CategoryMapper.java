@@ -1,13 +1,31 @@
 package com.gjk.mapper;
 
 import com.gjk.pojo.Category;
+import com.gjk.pojo.CategoryExample;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
 public interface CategoryMapper {
+    long countByExample(CategoryExample example);
 
-    /**
-     * 获取全部category列表
-     * */
-    List<Category> getCategoryList();
+    int deleteByExample(CategoryExample example);
+
+    int deleteByPrimaryKey(Integer id);
+
+    int insert(Category record);
+
+    int insertSelective(Category record);
+
+    List<Category> selectByExample(CategoryExample example);
+
+    Category selectByPrimaryKey(Integer id);
+
+    int updateByExampleSelective(@Param("record") Category record, @Param("example") CategoryExample example);
+
+    int updateByExample(@Param("record") Category record, @Param("example") CategoryExample example);
+
+    int updateByPrimaryKeySelective(Category record);
+
+    int updateByPrimaryKey(Category record);
 }

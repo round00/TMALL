@@ -5,5 +5,4 @@
   Time: 21:21
   To change this template use File | Settings | File Templates.
 --%>
-Hello
 <%response.sendRedirect("forehome");%>

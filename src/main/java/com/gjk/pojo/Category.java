@@ -4,6 +4,7 @@ import java.util.List;
 
 public class Category {
     private Integer id;
+
     private String name;
 
     //非数据库字段，jsp页面需要
@@ -23,7 +24,7 @@ public class Category {
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.name = name == null ? null : name.trim();
     }
 
     public List<Product> getProducts() {

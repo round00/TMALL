@@ -28,6 +28,6 @@ public class ProductImage {
     }
 
     public void setType(String type) {
-        this.type = type;
+        this.type = type == null ? null : type.trim();
     }
 }

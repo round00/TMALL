@@ -3,6 +3,7 @@ package com.gjk.service.Impl;
 import com.gjk.mapper.ProductMapper;
 import com.gjk.pojo.Category;
 import com.gjk.pojo.Product;
+import com.gjk.pojo.ProductExample;
 import com.gjk.pojo.ProductImage;
 import com.gjk.service.ProductImageService;
 import com.gjk.service.ProductService;
@@ -21,7 +22,9 @@ public class ProductServiceImpl implements ProductService {
     ProductImageService productImageService;
     @Override
     public List<Product> getProductListByCid(Category category) {
-        List<Product> products = productMapper.getProductListByCid(category.getId());
+        ProductExample productExample = new ProductExample();
+        productExample.createCriteria().andCidEqualTo(category.getId());
+        List<Product> products = productMapper.selectByExample(productExample);
         //填充product的Category
         for(Product p : products){
             p.setCategory(category);

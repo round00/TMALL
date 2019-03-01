@@ -1,15 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.gjk.mapper.ProductMapper">
-  <resultMap id="BaseResultMap" type="com.gjk.pojo.Product">
+<mapper namespace="com.gjk.mapper.PropertyMapper">
+  <resultMap id="BaseResultMap" type="com.gjk.pojo.Property">
     <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="subTitle" jdbcType="VARCHAR" property="subTitle" />
-    <result column="originalPrice" jdbcType="REAL" property="originalPrice" />
-    <result column="promotePrice" jdbcType="REAL" property="promotePrice" />
-    <result column="stock" jdbcType="INTEGER" property="stock" />
     <result column="cid" jdbcType="INTEGER" property="cid" />
-    <result column="createDate" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -70,15 +65,15 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, name, subTitle, originalPrice, promotePrice, stock, cid, createDate
+    id, cid, name
   </sql>
-  <select id="selectByExample" parameterType="com.gjk.pojo.ProductExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.gjk.pojo.PropertyExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from product
+    from property
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -89,114 +84,67 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from product
+    from property
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from product
+    delete from property
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.gjk.pojo.ProductExample">
-    delete from product
+  <delete id="deleteByExample" parameterType="com.gjk.pojo.PropertyExample">
+    delete from property
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.gjk.pojo.Product">
-    insert into product (id, name, subTitle, 
-      originalPrice, promotePrice, stock, 
-      cid, createDate)
-    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{subTitle,jdbcType=VARCHAR}, 
-      #{originalPrice,jdbcType=REAL}, #{promotePrice,jdbcType=REAL}, #{stock,jdbcType=INTEGER}, 
-      #{cid,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP})
+  <insert id="insert" parameterType="com.gjk.pojo.Property">
+    insert into property (id, cid, name
+      )
+    values (#{id,jdbcType=INTEGER}, #{cid,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}
+      )
   </insert>
-  <insert id="insertSelective" parameterType="com.gjk.pojo.Product">
-    insert into product
+  <insert id="insertSelective" parameterType="com.gjk.pojo.Property">
+    insert into property
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
       </if>
-      <if test="name != null">
-        name,
-      </if>
-      <if test="subTitle != null">
-        subTitle,
-      </if>
-      <if test="originalPrice != null">
-        originalPrice,
-      </if>
-      <if test="promotePrice != null">
-        promotePrice,
-      </if>
-      <if test="stock != null">
-        stock,
-      </if>
       <if test="cid != null">
         cid,
       </if>
-      <if test="createDate != null">
-        createDate,
+      <if test="name != null">
+        name,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
         #{id,jdbcType=INTEGER},
       </if>
-      <if test="name != null">
-        #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="subTitle != null">
-        #{subTitle,jdbcType=VARCHAR},
-      </if>
-      <if test="originalPrice != null">
-        #{originalPrice,jdbcType=REAL},
-      </if>
-      <if test="promotePrice != null">
-        #{promotePrice,jdbcType=REAL},
-      </if>
-      <if test="stock != null">
-        #{stock,jdbcType=INTEGER},
-      </if>
       <if test="cid != null">
         #{cid,jdbcType=INTEGER},
       </if>
-      <if test="createDate != null">
-        #{createDate,jdbcType=TIMESTAMP},
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.gjk.pojo.ProductExample" resultType="java.lang.Long">
-    select count(*) from product
+  <select id="countByExample" parameterType="com.gjk.pojo.PropertyExample" resultType="java.lang.Long">
+    select count(*) from property
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update product
+    update property
     <set>
       <if test="record.id != null">
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.name != null">
-        name = #{record.name,jdbcType=VARCHAR},
-      </if>
-      <if test="record.subTitle != null">
-        subTitle = #{record.subTitle,jdbcType=VARCHAR},
-      </if>
-      <if test="record.originalPrice != null">
-        originalPrice = #{record.originalPrice,jdbcType=REAL},
-      </if>
-      <if test="record.promotePrice != null">
-        promotePrice = #{record.promotePrice,jdbcType=REAL},
-      </if>
-      <if test="record.stock != null">
-        stock = #{record.stock,jdbcType=INTEGER},
-      </if>
       <if test="record.cid != null">
         cid = #{record.cid,jdbcType=INTEGER},
       </if>
-      <if test="record.createDate != null">
-        createDate = #{record.createDate,jdbcType=TIMESTAMP},
+      <if test="record.name != null">
+        name = #{record.name,jdbcType=VARCHAR},
       </if>
     </set>
     <if test="_parameter != null">
@@ -204,55 +152,30 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update product
+    update property
     set id = #{record.id,jdbcType=INTEGER},
-      name = #{record.name,jdbcType=VARCHAR},
-      subTitle = #{record.subTitle,jdbcType=VARCHAR},
-      originalPrice = #{record.originalPrice,jdbcType=REAL},
-      promotePrice = #{record.promotePrice,jdbcType=REAL},
-      stock = #{record.stock,jdbcType=INTEGER},
       cid = #{record.cid,jdbcType=INTEGER},
-      createDate = #{record.createDate,jdbcType=TIMESTAMP}
+      name = #{record.name,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.gjk.pojo.Product">
-    update product
+  <update id="updateByPrimaryKeySelective" parameterType="com.gjk.pojo.Property">
+    update property
     <set>
-      <if test="name != null">
-        name = #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="subTitle != null">
-        subTitle = #{subTitle,jdbcType=VARCHAR},
-      </if>
-      <if test="originalPrice != null">
-        originalPrice = #{originalPrice,jdbcType=REAL},
-      </if>
-      <if test="promotePrice != null">
-        promotePrice = #{promotePrice,jdbcType=REAL},
-      </if>
-      <if test="stock != null">
-        stock = #{stock,jdbcType=INTEGER},
-      </if>
       <if test="cid != null">
         cid = #{cid,jdbcType=INTEGER},
       </if>
-      <if test="createDate != null">
-        createDate = #{createDate,jdbcType=TIMESTAMP},
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.gjk.pojo.Product">
-    update product
-    set name = #{name,jdbcType=VARCHAR},
-      subTitle = #{subTitle,jdbcType=VARCHAR},
-      originalPrice = #{originalPrice,jdbcType=REAL},
-      promotePrice = #{promotePrice,jdbcType=REAL},
-      stock = #{stock,jdbcType=INTEGER},
-      cid = #{cid,jdbcType=INTEGER},
-      createDate = #{createDate,jdbcType=TIMESTAMP}
+  <update id="updateByPrimaryKey" parameterType="com.gjk.pojo.Property">
+    update property
+    set cid = #{cid,jdbcType=INTEGER},
+      name = #{name,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

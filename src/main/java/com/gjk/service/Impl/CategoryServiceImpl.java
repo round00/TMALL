@@ -2,6 +2,7 @@ package com.gjk.service.Impl;
 
 import com.gjk.mapper.CategoryMapper;
 import com.gjk.pojo.Category;
+import com.gjk.pojo.CategoryExample;
 import com.gjk.pojo.Product;
 import com.gjk.service.CategoryService;
 import com.gjk.service.ProductService;
@@ -21,7 +22,8 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public List<Category> getCategoryList() {
-        return categoryMapper.getCategoryList();
+        CategoryExample categoryExample = new CategoryExample();
+        return categoryMapper.selectByExample(categoryExample);
     }
 
     @Override

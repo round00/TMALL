@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.gjk.mapper.ProductImageMapper">
-  <resultMap id="BaseResultMap" type="com.gjk.pojo.ProductImage">
+<mapper namespace="com.gjk.mapper.OrderItemMapper">
+  <resultMap id="BaseResultMap" type="com.gjk.pojo.OrderItem">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="pid" jdbcType="INTEGER" property="pid" />
-    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="oid" jdbcType="INTEGER" property="oid" />
+    <result column="uid" jdbcType="INTEGER" property="uid" />
+    <result column="number" jdbcType="INTEGER" property="number" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -65,15 +67,15 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, pid, type
+    id, pid, oid, uid, number
   </sql>
-  <select id="selectByExample" parameterType="com.gjk.pojo.ProductImageExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.gjk.pojo.OrderItemExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from productimage
+    from orderitem
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -84,27 +86,27 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from productimage
+    from orderitem
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from productimage
+    delete from orderitem
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.gjk.pojo.ProductImageExample">
-    delete from productimage
+  <delete id="deleteByExample" parameterType="com.gjk.pojo.OrderItemExample">
+    delete from orderitem
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.gjk.pojo.ProductImage">
-    insert into productimage (id, pid, type
-      )
-    values (#{id,jdbcType=INTEGER}, #{pid,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}
-      )
+  <insert id="insert" parameterType="com.gjk.pojo.OrderItem">
+    insert into orderitem (id, pid, oid, 
+      uid, number)
+    values (#{id,jdbcType=INTEGER}, #{pid,jdbcType=INTEGER}, #{oid,jdbcType=INTEGER}, 
+      #{uid,jdbcType=INTEGER}, #{number,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="com.gjk.pojo.ProductImage">
-    insert into productimage
+  <insert id="insertSelective" parameterType="com.gjk.pojo.OrderItem">
+    insert into orderitem
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
@@ -112,8 +114,14 @@
       <if test="pid != null">
         pid,
       </if>
-      <if test="type != null">
-        type,
+      <if test="oid != null">
+        oid,
+      </if>
+      <if test="uid != null">
+        uid,
+      </if>
+      <if test="number != null">
+        number,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -123,19 +131,25 @@
       <if test="pid != null">
         #{pid,jdbcType=INTEGER},
       </if>
-      <if test="type != null">
-        #{type,jdbcType=VARCHAR},
+      <if test="oid != null">
+        #{oid,jdbcType=INTEGER},
+      </if>
+      <if test="uid != null">
+        #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="number != null">
+        #{number,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.gjk.pojo.ProductImageExample" resultType="java.lang.Long">
-    select count(*) from productimage
+  <select id="countByExample" parameterType="com.gjk.pojo.OrderItemExample" resultType="java.lang.Long">
+    select count(*) from orderitem
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update productimage
+    update orderitem
     <set>
       <if test="record.id != null">
         id = #{record.id,jdbcType=INTEGER},
@@ -143,8 +157,14 @@
       <if test="record.pid != null">
         pid = #{record.pid,jdbcType=INTEGER},
       </if>
-      <if test="record.type != null">
-        type = #{record.type,jdbcType=VARCHAR},
+      <if test="record.oid != null">
+        oid = #{record.oid,jdbcType=INTEGER},
+      </if>
+      <if test="record.uid != null">
+        uid = #{record.uid,jdbcType=INTEGER},
+      </if>
+      <if test="record.number != null">
+        number = #{record.number,jdbcType=INTEGER},
       </if>
     </set>
     <if test="_parameter != null">
@@ -152,30 +172,40 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update productimage
+    update orderitem
     set id = #{record.id,jdbcType=INTEGER},
       pid = #{record.pid,jdbcType=INTEGER},
-      type = #{record.type,jdbcType=VARCHAR}
+      oid = #{record.oid,jdbcType=INTEGER},
+      uid = #{record.uid,jdbcType=INTEGER},
+      number = #{record.number,jdbcType=INTEGER}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.gjk.pojo.ProductImage">
-    update productimage
+  <update id="updateByPrimaryKeySelective" parameterType="com.gjk.pojo.OrderItem">
+    update orderitem
     <set>
       <if test="pid != null">
         pid = #{pid,jdbcType=INTEGER},
       </if>
-      <if test="type != null">
-        type = #{type,jdbcType=VARCHAR},
+      <if test="oid != null">
+        oid = #{oid,jdbcType=INTEGER},
+      </if>
+      <if test="uid != null">
+        uid = #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="number != null">
+        number = #{number,jdbcType=INTEGER},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.gjk.pojo.ProductImage">
-    update productimage
+  <update id="updateByPrimaryKey" parameterType="com.gjk.pojo.OrderItem">
+    update orderitem
     set pid = #{pid,jdbcType=INTEGER},
-      type = #{type,jdbcType=VARCHAR}
+      oid = #{oid,jdbcType=INTEGER},
+      uid = #{uid,jdbcType=INTEGER},
+      number = #{number,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>
