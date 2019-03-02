@@ -1,21 +1,20 @@
 package com.gjk.controller;
 
-import com.gjk.pojo.Category;
-import com.gjk.pojo.Product;
-import com.gjk.pojo.PropertyValue;
-import com.gjk.pojo.User;
-import com.gjk.service.CategoryService;
-import com.gjk.service.ProductService;
-import com.gjk.service.PropertyValueService;
-import com.gjk.service.UserService;
+import com.gjk.pojo.*;
+import com.gjk.service.*;
+import org.apache.commons.lang.math.RandomUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -29,6 +28,10 @@ public class ForeController {
     PropertyValueService propertyValueService;
     @Autowired
     UserService userService;
+    @Autowired
+    OrderItemService orderItemService;
+    @Autowired
+    OrderService orderService;
 
     @RequestMapping(value = "/forehome", method = RequestMethod.GET)
     public String home(Model model){
@@ -99,5 +102,162 @@ public class ForeController {
         }
 
         return "fore/registerSuccess";
+    }
+
+    @RequestMapping(value = "/forecheckLogin", method = RequestMethod.GET)
+    @ResponseBody
+    public String checkLoginStatus(HttpSession session){
+        User user = (User)session.getAttribute("user");
+        if(user == null){
+            return "fail";
+        }
+        return "success";
+    }
+
+    @RequestMapping(value = "/foreloginAjax", method = RequestMethod.GET)
+    @ResponseBody
+    public String doLoginAjax(String name, String password, HttpSession session){
+        User user = userService.getUserByNameAndPass(name, password);
+        if(user == null){
+            return "fail";
+        }
+        session.setAttribute("user", user);
+        return "success";
+    }
+
+    @RequestMapping(value = "/forebuyone", method = RequestMethod.GET)
+    public String buyNow(int pid, int num, HttpSession session){
+        User user = (User) session.getAttribute("user");
+        int orderItemId = 0;
+        OrderItem orderItem = orderItemService.getOrderItemByUidAndPid(user.getId(), pid);
+
+        if(orderItem != null){
+            orderItem.setNumber(orderItem.getNumber() + num);
+            orderItemService.update(orderItem);
+            orderItemId = orderItem.getId();
+        }else{
+            OrderItem oi = new OrderItem();
+            oi.setNumber(num);
+            oi.setPid(pid);
+            oi.setUid(user.getId());
+            orderItemService.add(oi);
+            orderItemId = oi.getId();
+        }
+
+        return "redirect:forebuy?oiid=" + orderItemId;
+    }
+
+    @RequestMapping(value = "/forebuy", method = RequestMethod.GET)
+    public String buy(String[] oiid, Model model, HttpSession session){
+        List<OrderItem> orderItems = new ArrayList<>();
+        float total = 0;
+        for(String strOIId : oiid){
+            int oiId = Integer.valueOf(strOIId);
+            OrderItem orderItem = orderItemService.get(oiId);
+            orderItemService.setProductField(orderItem);
+            orderItems.add(orderItem);
+            total += orderItem.getNumber()*orderItem.getProduct().getPromotePrice();
+        }
+
+        session.setAttribute("ois", orderItems);
+        model.addAttribute("ois", orderItems)
+                .addAttribute("total", total);
+        return "fore/buy";
+    }
+
+    @RequestMapping(value = "/forebought", method = RequestMethod.GET)
+    public String bought(Model model, HttpSession session){
+        User user = (User) session.getAttribute("user");
+        List<Order> os = orderService.getValid(user.getId());
+        orderService.fillOrderItems(os);
+        orderService.fillTotalFields(os);
+
+        model.addAttribute("os", os);
+        return "fore/bought";
+    }
+
+    @RequestMapping(value = "/forecart", method = RequestMethod.GET)
+    public String cart(Model model, HttpSession session){
+        User user = (User)session.getAttribute("user");
+        List<OrderItem> orderItems = orderItemService.getOrderItemsByUid(user.getId());
+        for(OrderItem orderItem : orderItems){
+            orderItemService.setProductField(orderItem);
+        }
+
+        model.addAttribute("ois", orderItems);
+        return "fore/cart";
+    }
+
+    @RequestMapping(value = "/foredeleteOrderItem", method = RequestMethod.POST)
+    @ResponseBody
+    public String deleteOrderItem(int oiid,  HttpSession session){
+        User user = (User)session.getAttribute("user");
+        if(user == null){
+            return "fail";
+        }
+        if(!orderItemService.delete(oiid)){
+            return "fail";
+        }
+        return "success";
+    }
+
+    @RequestMapping(value = "/forechangeOrderItem", method = RequestMethod.POST)
+    @ResponseBody
+    public String changeOrderItem(int pid, int number, HttpSession session){
+        User user = (User)session.getAttribute("user");
+        if(user == null){
+            return "fail";
+        }
+        OrderItem orderItem = orderItemService.getOrderItemByUidAndPid(user.getId(), pid);
+        if(orderItem == null){
+            return "fail";
+        }
+        orderItem.setNumber(number);
+        orderItemService.update(orderItem);
+        return "success";
+    }
+
+    @RequestMapping(value = "/foredeleteOrder", method = RequestMethod.POST)
+    @ResponseBody
+    public String deleteOrder(int oid, HttpSession session){
+        User user = (User)session.getAttribute("user");
+        Order order = orderService.getById(oid);
+        if(user == null || order == null){
+            return "fail";
+        }
+        order.setStatus(OrderService.DELETE);
+        if(!orderService.update(order)){
+            return "fail";
+        }
+        return "success";
+    }
+
+    @RequestMapping(value = "/forecreateOrder", method = RequestMethod.POST)
+    public String createOrder(Order order, HttpSession session){
+        User user = (User)session.getAttribute("user");
+        Date createDate = new Date();
+        String orderCode = new SimpleDateFormat("yyyymmddhhmmssSSS").format(createDate) +
+                RandomUtils.nextInt(10000);
+        order.setOrderCode(orderCode);
+        order.setCreateDate(createDate);
+        order.setUid(user.getId());
+        order.setStatus(OrderService.WAIT_PAY);
+        //这个设计太不合理了， 应该由页面把oderItem的id发过来
+        List<OrderItem> orderItems = (List<OrderItem>)session.getAttribute("ois");
+
+        float total = orderService.add(order, orderItems);
+        return "redirect:forealipay?oid="+order.getId() + "&total=" + total;
+    }
+    @RequestMapping(value = "/forealipay", method = RequestMethod.GET)
+    public String alipay(){
+        return "fore/alipay";
+    }
+
+    @RequestMapping(value = "/forepayed", method = RequestMethod.GET)
+    public String confirmPayed(int oid, float total){
+        Order order = orderService.getById(oid);
+        order.setStatus(OrderService.WAIT_DELIVER);
+        orderService.update(order);
+        return "fore/payed";
     }
 }

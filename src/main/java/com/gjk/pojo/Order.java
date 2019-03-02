@@ -1,11 +1,12 @@
 package com.gjk.pojo;
 
 import java.util.Date;
+import java.util.List;
 
 public class Order {
     private Integer id;
 
-    private String ordercode;
+    private String orderCode;
 
     private String address;
 
@@ -15,19 +16,26 @@ public class Order {
 
     private String mobile;
 
-    private String usermessage;
+    private String userMessage;
 
-    private Date createdate;
+    private Date createDate;
 
-    private Date paydate;
+    private Date payDate;
 
-    private Date deliverydate;
+    private Date deliveryDate;
 
-    private Date confirmdate;
+    private Date confirmDate;
 
     private Integer uid;
 
     private String status;
+
+    //非数据库字段
+    private List<OrderItem> orderItems;
+
+    private int totalNumber;
+
+    private float total;
 
     public Integer getId() {
         return id;
@@ -35,14 +43,6 @@ public class Order {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public String getOrdercode() {
-        return ordercode;
-    }
-
-    public void setOrdercode(String ordercode) {
-        this.ordercode = ordercode == null ? null : ordercode.trim();
     }
 
     public String getAddress() {
@@ -77,46 +77,6 @@ public class Order {
         this.mobile = mobile == null ? null : mobile.trim();
     }
 
-    public String getUsermessage() {
-        return usermessage;
-    }
-
-    public void setUsermessage(String usermessage) {
-        this.usermessage = usermessage == null ? null : usermessage.trim();
-    }
-
-    public Date getCreatedate() {
-        return createdate;
-    }
-
-    public void setCreatedate(Date createdate) {
-        this.createdate = createdate;
-    }
-
-    public Date getPaydate() {
-        return paydate;
-    }
-
-    public void setPaydate(Date paydate) {
-        this.paydate = paydate;
-    }
-
-    public Date getDeliverydate() {
-        return deliverydate;
-    }
-
-    public void setDeliverydate(Date deliverydate) {
-        this.deliverydate = deliverydate;
-    }
-
-    public Date getConfirmdate() {
-        return confirmdate;
-    }
-
-    public void setConfirmdate(Date confirmdate) {
-        this.confirmdate = confirmdate;
-    }
-
     public Integer getUid() {
         return uid;
     }
@@ -131,5 +91,77 @@ public class Order {
 
     public void setStatus(String status) {
         this.status = status == null ? null : status.trim();
+    }
+
+    public String getOrderCode() {
+        return orderCode;
+    }
+
+    public void setOrderCode(String orderCode) {
+        this.orderCode = orderCode;
+    }
+
+    public String getUserMessage() {
+        return userMessage;
+    }
+
+    public void setUserMessage(String userMessage) {
+        this.userMessage = userMessage;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+
+    public Date getPayDate() {
+        return payDate;
+    }
+
+    public void setPayDate(Date payDate) {
+        this.payDate = payDate;
+    }
+
+    public Date getDeliveryDate() {
+        return deliveryDate;
+    }
+
+    public void setDeliveryDate(Date deliveryDate) {
+        this.deliveryDate = deliveryDate;
+    }
+
+    public Date getConfirmDate() {
+        return confirmDate;
+    }
+
+    public void setConfirmDate(Date confirmDate) {
+        this.confirmDate = confirmDate;
+    }
+
+    public List<OrderItem> getOrderItems() {
+        return orderItems;
+    }
+
+    public void setOrderItems(List<OrderItem> orderItems) {
+        this.orderItems = orderItems;
+    }
+
+    public int getTotalNumber() {
+        return totalNumber;
+    }
+
+    public void setTotalNumber(int totoalNumber) {
+        this.totalNumber = totoalNumber;
+    }
+
+    public float getTotal() {
+        return total;
+    }
+
+    public void setTotal(float total) {
+        this.total = total;
     }
 }
