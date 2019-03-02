@@ -41,7 +41,10 @@ public class CheckLoginInterceptor extends HandlerInterceptorAdapter {
                 "forecreateOrder",
                 "forebuy",
                 "forealipay",
-                "forepayed"
+                "forepayed",
+                "foreconfirmPay",
+                "forereview",
+                "foredoreview"
         };
         for(String s : checkList){
             if(uri.startsWith(s)){

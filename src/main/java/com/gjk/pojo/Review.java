@@ -11,7 +11,10 @@ public class Review {
 
     private Integer pid;
 
-    private Date createdate;
+    private Date createDate;
+
+    //非数据库字段
+    private  User user;
 
     public Integer getId() {
         return id;
@@ -45,11 +48,19 @@ public class Review {
         this.pid = pid;
     }
 
-    public Date getCreatedate() {
-        return createdate;
+    public Date getCreateDate() {
+        return createDate;
     }
 
-    public void setCreatedate(Date createdate) {
-        this.createdate = createdate;
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

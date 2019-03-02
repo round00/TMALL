@@ -2,7 +2,13 @@ package com.gjk.service;
 
 import com.gjk.pojo.User;
 
+import java.util.List;
+
 public interface UserService {
+    /**
+     * 通过ID获取用户对象
+     * */
+    User getUserById(int uid);
     /**
      * 通过用户名和密码获取对象
      * */
@@ -15,4 +21,8 @@ public interface UserService {
      * 增加一个用户
      * */
     boolean addUser(User user);
+    /**
+     * 获得用户列表
+     * */
+    List<User> getUserList();
 }

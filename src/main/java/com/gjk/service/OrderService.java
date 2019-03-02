@@ -10,6 +10,9 @@ public interface OrderService {
     String DELETE = "delete";
     String WAIT_PAY = "waitPay";
     String WAIT_DELIVER = "waitDelivery";
+    String WAIT_REVIEW = "waitReview";
+    String WAIT_CONFIRM = "waitConfirm";
+    String FINISH = "finish";
     /**
      * 根据uid获取订单
      * */

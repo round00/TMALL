@@ -32,6 +32,8 @@ public class ForeController {
     OrderItemService orderItemService;
     @Autowired
     OrderService orderService;
+    @Autowired
+    ReviewService reviewService;
 
     @RequestMapping(value = "/forehome", method = RequestMethod.GET)
     public String home(Model model){
@@ -49,8 +51,10 @@ public class ForeController {
         productService.setSaleAndReviewCount(product);
 
         List<PropertyValue> pvs = propertyValueService.getPVSByProductId(pId);
+        List<Review> reviews = reviewService.getReviewList(pId);
         model.addAttribute("p", product)
-                .addAttribute("pvs", pvs);
+                .addAttribute("pvs", pvs)
+                .addAttribute("reviews", reviews);
         return "fore/product";
     }
 
@@ -260,4 +264,58 @@ public class ForeController {
         orderService.update(order);
         return "fore/payed";
     }
+
+    @RequestMapping(value = "/foreconfirmPay", method = RequestMethod.GET)
+    public String confirmGetProduct(int oid, Model model){
+        Order order = orderService.getById(oid);
+        List<Order> orders = new ArrayList<>();
+        orders.add(order);
+        orderService.fillOrderItems(orders);
+        orderService.fillTotalFields(orders);
+
+        model.addAttribute("o", orders.get(0));
+        return "fore/confirmPay";
+    }
+    @RequestMapping(value = "/foreorderConfirmed", method = RequestMethod.GET)
+    public String orderConfirmed(int oid, Model model){
+        Order order = orderService.getById(oid);
+        order.setStatus(OrderService.WAIT_REVIEW);
+        orderService.update(order);
+
+        return "fore/orderConfirmed";
+    }
+
+    @RequestMapping(value = "/forereview", method = RequestMethod.GET)
+    public String review(int oid, Model model){
+        Order order = orderService.getById(oid);
+        List<OrderItem> orderItems = orderItemService.getOrderItemsByOid(order.getId());
+        Product product = productService.getProductByPid(orderItems.get(0).getPid());
+        productService.setFirstProductImage(product);
+        productService.setSaleAndReviewCount(product);
+
+        List<Review> reviews = reviewService.getReviewList(product.getId());
+        reviewService.fillUser(reviews);
+
+        model.addAttribute("o", order)
+                .addAttribute("p", product)
+                .addAttribute("reviews", reviews);
+        return "fore/review";
+    }
+    @RequestMapping(value = "/foredoreview", method = RequestMethod.POST)
+    public String commitReview(String content, int oid, int pid, HttpSession session){
+        User user = (User)session.getAttribute("user");
+        Review review = new Review();
+        review.setContent(content);
+        review.setPid(pid);
+        review.setUid(user.getId());
+        review.setCreateDate(new Date());
+        reviewService.add(review);
+
+        Order order = orderService.getById(oid);
+        order.setStatus(OrderService.FINISH);
+        orderService.update(order);
+
+        return "redirect:forereview?oid="+oid +"&showonly=true";
+    }
+
 }

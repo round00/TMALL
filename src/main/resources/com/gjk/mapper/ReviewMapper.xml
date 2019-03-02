@@ -6,7 +6,7 @@
     <result column="content" jdbcType="VARCHAR" property="content" />
     <result column="uid" jdbcType="INTEGER" property="uid" />
     <result column="pid" jdbcType="INTEGER" property="pid" />
-    <result column="createDate" jdbcType="TIMESTAMP" property="createdate" />
+    <result column="createDate" jdbcType="TIMESTAMP" property="createDate" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -99,13 +99,13 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.gjk.pojo.Review">
+  <insert id="insert" useGeneratedKeys="true" keyProperty="id" keyColumn="id" parameterType="com.gjk.pojo.Review">
     insert into review (id, content, uid, 
       pid, createDate)
     values (#{id,jdbcType=INTEGER}, #{content,jdbcType=VARCHAR}, #{uid,jdbcType=INTEGER}, 
-      #{pid,jdbcType=INTEGER}, #{createdate,jdbcType=TIMESTAMP})
+      #{pid,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.gjk.pojo.Review">
+  <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id" keyColumn="id" parameterType="com.gjk.pojo.Review">
     insert into review
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -120,7 +120,7 @@
       <if test="pid != null">
         pid,
       </if>
-      <if test="createdate != null">
+      <if test="createDate != null">
         createDate,
       </if>
     </trim>
@@ -137,8 +137,8 @@
       <if test="pid != null">
         #{pid,jdbcType=INTEGER},
       </if>
-      <if test="createdate != null">
-        #{createdate,jdbcType=TIMESTAMP},
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -163,8 +163,8 @@
       <if test="record.pid != null">
         pid = #{record.pid,jdbcType=INTEGER},
       </if>
-      <if test="record.createdate != null">
-        createDate = #{record.createdate,jdbcType=TIMESTAMP},
+      <if test="record.createDate != null">
+        createDate = #{record.createDate,jdbcType=TIMESTAMP},
       </if>
     </set>
     <if test="_parameter != null">
@@ -177,7 +177,7 @@
       content = #{record.content,jdbcType=VARCHAR},
       uid = #{record.uid,jdbcType=INTEGER},
       pid = #{record.pid,jdbcType=INTEGER},
-      createDate = #{record.createdate,jdbcType=TIMESTAMP}
+      createDate = #{record.createDate,jdbcType=TIMESTAMP}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -194,8 +194,8 @@
       <if test="pid != null">
         pid = #{pid,jdbcType=INTEGER},
       </if>
-      <if test="createdate != null">
-        createDate = #{createdate,jdbcType=TIMESTAMP},
+      <if test="createDate != null">
+        createDate = #{createDate,jdbcType=TIMESTAMP},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -205,7 +205,7 @@
     set content = #{content,jdbcType=VARCHAR},
       uid = #{uid,jdbcType=INTEGER},
       pid = #{pid,jdbcType=INTEGER},
-      createDate = #{createdate,jdbcType=TIMESTAMP}
+      createDate = #{createDate,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

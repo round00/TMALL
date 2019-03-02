@@ -15,6 +15,11 @@ public class UserServiceImpl implements UserService {
     UserMapper userMapper;
 
     @Override
+    public User getUserById(int uid) {
+        return userMapper.selectByPrimaryKey(uid);
+    }
+
+    @Override
     public User getUserByNameAndPass(String name, String pass) {
         UserExample userExample = new UserExample();
         userExample.createCriteria().andNameEqualTo(name)
@@ -44,5 +49,11 @@ public class UserServiceImpl implements UserService {
             return  false;
         }
         return true;
+    }
+
+    @Override
+    public List<User> getUserList() {
+        UserExample userExample = new UserExample();
+        return userMapper.selectByExample(userExample);
     }
 }
