@@ -40,4 +40,12 @@ public interface OrderService {
      * 填充total字段
      * */
     void fillTotalFields(List<Order> orders);
+    /**
+     * 填充User字段
+     * */
+    void filleUserFields(List<Order> orders);
+    /**
+     * 获取所有订单
+     * */
+    List<Order> getAllOrderList();
 }

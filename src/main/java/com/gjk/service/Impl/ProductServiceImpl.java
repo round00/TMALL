@@ -42,6 +42,14 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public List<Product> getProductListByCid(int cid) {
+        ProductExample productExample = new ProductExample();
+        productExample.createCriteria().andCidEqualTo(cid);
+        List<Product> products = productMapper.selectByExample(productExample);
+        return products;
+    }
+
+    @Override
     public Product getProductByPid(int pid) {
         Product product = productMapper.selectByPrimaryKey(pid);
         if(product == null){
@@ -58,7 +66,8 @@ public class ProductServiceImpl implements ProductService {
                 productImageService.getProductImages(p.getId(), ProductImageService.type_single);
         List<ProductImage> productDetailImages =
                 productImageService.getProductImages(p.getId(), ProductImageService.type_detail);
-        p.setFirstProductImage(productSingleImages.get(0));
+        if(!productSingleImages.isEmpty())
+            p.setFirstProductImage(productSingleImages.get(0));
         p.setProductSingleImages(productSingleImages);
         p.setProductDetailImages(productDetailImages);
     }
@@ -67,7 +76,8 @@ public class ProductServiceImpl implements ProductService {
     public void setFirstProductImage(Product p) {
         List<ProductImage> productImages =
                 productImageService.getProductImages(p.getId(), ProductImageService.type_single);
-        p.setFirstProductImage(productImages.get(0));
+        if(!productImages.isEmpty())
+            p.setFirstProductImage(productImages.get(0));
     }
 
     @Override
@@ -89,5 +99,20 @@ public class ProductServiceImpl implements ProductService {
             setSaleAndReviewCount(p);
         }
         return products;
+    }
+
+    @Override
+    public void update(Product product) {
+        productMapper.updateByPrimaryKeySelective(product);
+    }
+
+    @Override
+    public void add(Product product) {
+        productMapper.insertSelective(product);
+    }
+
+    @Override
+    public void delete(Product product) {
+        productMapper.deleteByPrimaryKey(product.getId());
     }
 }

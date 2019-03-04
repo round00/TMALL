@@ -150,7 +150,7 @@ public class ForeController {
 
         return "redirect:forebuy?oiid=" + orderItemId;
     }
-
+    //创建订单页面，就是填地址什么的
     @RequestMapping(value = "/forebuy", method = RequestMethod.GET)
     public String buy(String[] oiid, Model model, HttpSession session){
         List<OrderItem> orderItems = new ArrayList<>();
@@ -168,7 +168,7 @@ public class ForeController {
                 .addAttribute("total", total);
         return "fore/buy";
     }
-
+    //我的订单页面
     @RequestMapping(value = "/forebought", method = RequestMethod.GET)
     public String bought(Model model, HttpSession session){
         User user = (User) session.getAttribute("user");
@@ -179,7 +179,7 @@ public class ForeController {
         model.addAttribute("os", os);
         return "fore/bought";
     }
-
+    //购物车
     @RequestMapping(value = "/forecart", method = RequestMethod.GET)
     public String cart(Model model, HttpSession session){
         User user = (User)session.getAttribute("user");
@@ -260,6 +260,7 @@ public class ForeController {
     @RequestMapping(value = "/forepayed", method = RequestMethod.GET)
     public String confirmPayed(int oid, float total){
         Order order = orderService.getById(oid);
+        order.setPayDate(new Date());
         order.setStatus(OrderService.WAIT_DELIVER);
         orderService.update(order);
         return "fore/payed";
@@ -279,6 +280,7 @@ public class ForeController {
     @RequestMapping(value = "/foreorderConfirmed", method = RequestMethod.GET)
     public String orderConfirmed(int oid, Model model){
         Order order = orderService.getById(oid);
+        order.setConfirmDate(new Date());
         order.setStatus(OrderService.WAIT_REVIEW);
         orderService.update(order);
 

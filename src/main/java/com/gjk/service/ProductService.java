@@ -10,6 +10,7 @@ public interface ProductService {
      *根据分类ID获取产品列表
      * */
     List<Product> getProductListByCid(Category category);
+    List<Product> getProductListByCid(int cid);
     /**
      * 根据ID获取Product
      * */
@@ -30,4 +31,8 @@ public interface ProductService {
      * 根据name进行搜索
      * */
     List<Product> searchByName(String keyword);
+
+    void update(Product product);
+    void add(Product product);
+    void delete(Product product);
 }

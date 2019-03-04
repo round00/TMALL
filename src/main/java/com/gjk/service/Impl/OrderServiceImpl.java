@@ -1,12 +1,10 @@
 package com.gjk.service.Impl;
 
 import com.gjk.mapper.OrderMapper;
-import com.gjk.pojo.Order;
-import com.gjk.pojo.OrderExample;
-import com.gjk.pojo.OrderItem;
-import com.gjk.pojo.Product;
+import com.gjk.pojo.*;
 import com.gjk.service.OrderItemService;
 import com.gjk.service.OrderService;
+import com.gjk.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +16,8 @@ public class OrderServiceImpl implements OrderService {
     OrderMapper orderMapper;
     @Autowired
     OrderItemService orderItemService;
+    @Autowired
+    UserService userService;
     @Override
     public List<Order> get(int uid) {
         OrderExample orderExample = new OrderExample();
@@ -86,5 +86,20 @@ public class OrderServiceImpl implements OrderService {
             order.setTotal(totalMoney);
             order.setTotalNumber(totalNumber);
         }
+    }
+
+    @Override
+    public void filleUserFields(List<Order> orders) {
+        for(Order order : orders){
+            User user = userService.getUserById(order.getUid());
+            order.setUser(user);
+        }
+    }
+
+    @Override
+    public List<Order> getAllOrderList() {
+        OrderExample orderExample = new OrderExample();
+        orderExample.setOrderByClause("id desc");
+        return orderMapper.selectByExample(orderExample);
     }
 }

@@ -1,5 +1,7 @@
 package com.gjk.pojo;
 
+import com.gjk.service.OrderService;
+
 import java.util.Date;
 import java.util.List;
 
@@ -36,6 +38,8 @@ public class Order {
     private int totalNumber;
 
     private float total;
+
+    private User user;
 
     public Integer getId() {
         return id;
@@ -163,5 +167,31 @@ public class Order {
 
     public void setTotal(float total) {
         this.total = total;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public String getStatusDesc(){
+        switch (status){
+            case OrderService.DELETE:
+                return "已删除";
+            case OrderService.FINISH:
+                return "已完成";
+            case OrderService.WAIT_CONFIRM:
+                return "待收货";
+            case OrderService.WAIT_DELIVER:
+                return "待发货";
+            case OrderService.WAIT_PAY:
+                return "待付款";
+            case OrderService.WAIT_REVIEW:
+                return "待评价";
+        }
+        return "";
     }
 }
