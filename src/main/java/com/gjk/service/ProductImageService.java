@@ -14,4 +14,7 @@ public interface ProductImageService {
      * @Param2： 产品图片类型
      * */
     List<ProductImage> getProductImages(int pid, String type);
+    ProductImage get(int id);
+    void delete(int id);
+    void add(ProductImage productImage);
 }

@@ -97,13 +97,13 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.gjk.pojo.ProductImage">
+  <insert id="insert" useGeneratedKeys="true" keyProperty="id" keyColumn="id" parameterType="com.gjk.pojo.ProductImage">
     insert into productimage (id, pid, type
       )
     values (#{id,jdbcType=INTEGER}, #{pid,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.gjk.pojo.ProductImage">
+  <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id" keyColumn="id" parameterType="com.gjk.pojo.ProductImage">
     insert into productimage
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">

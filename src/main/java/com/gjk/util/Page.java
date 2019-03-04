@@ -71,6 +71,7 @@ public class Page {
         if(total % count != 0){
             totalCount++;
         }
+        if(totalCount == 0) totalCount = 1;
         return totalCount;
     }
 }

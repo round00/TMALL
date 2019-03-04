@@ -26,4 +26,8 @@ public interface CategoryService {
      * 根据ID查询分类
      * */
     Category getCategoryById(int cid);
+
+    void add(Category category);
+    void update(Category category);
+    void delete(int cid);
 }

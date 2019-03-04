@@ -22,4 +22,19 @@ public class ProductImageServiceImpl implements ProductImageService {
         productImageExample.setOrderByClause("id desc");
         return productImageMapper.selectByExample(productImageExample);
     }
+
+    @Override
+    public ProductImage get(int id) {
+        return productImageMapper.selectByPrimaryKey(id);
+    }
+
+    @Override
+    public void delete(int id) {
+        productImageMapper.deleteByPrimaryKey(id);
+    }
+
+    @Override
+    public void add(ProductImage productImage) {
+        productImageMapper.insertSelective(productImage);
+    }
 }
