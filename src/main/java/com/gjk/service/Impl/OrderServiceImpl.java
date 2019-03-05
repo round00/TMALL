@@ -7,6 +7,8 @@ import com.gjk.service.OrderService;
 import com.gjk.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -38,9 +40,9 @@ public class OrderServiceImpl implements OrderService {
         }
         return true;
     }
-
-    ///这个应该用上事务管理,现在对事务怎么用还不太熟， 先不写了
+    
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, rollbackForClassName = "Exception")
     public float add(Order order, List<OrderItem> orderItems) {
         orderMapper.insertSelective(order);
         float total = 0;
